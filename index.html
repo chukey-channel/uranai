@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>細目滿子の極秘統計学館</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #020005 0%, #0d041a 40%, #1c053a 70%, #020005 100%);
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .fortune-container {
+            background: rgba(12, 4, 24, 0.95);
+            border: 2px solid #ffb703; border-radius: 24px;
+            box-shadow: 0 0 40px rgba(199, 125, 255, 0.25);
+            max-width: 650px; width: 95%; margin: 40px auto; padding: 40px;
+            box-sizing: border-box; text-align: center;
+        }
+        h1 { font-size: 2rem; color: #72efdd; text-shadow: 0 0 15px #3a0ca3, 0 0 5px #ffb703; margin-bottom: 5px; }
+        .sub-title { font-size: 0.95rem; color: #ffb703; font-weight: bold; margin-bottom: 30px; letter-spacing: 2px; }
+        .crystal-ball {
+            width: 90px; height: 90px; margin: 0 auto 25px auto;
+            background: radial-gradient(circle, #72efdd 0%, #4cc9f0 50%, #3a0ca3 100%);
+            border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 0 30px #4cc9f0;
+        }
+        .intro-box {
+            font-size: 0.95rem; line-height: 1.8; color: #e0aaff;
+            background: rgba(114, 239, 221, 0.03); padding: 22px;
+            border-radius: 14px; border: 1px dashed #72efdd; border-left: 5px solid #72efdd;
+            text-align: left; margin-bottom: 30px;
+        }
+        .counter-badge {
+            display: inline-block; background: #3a0ca3; color: #72efdd;
+            padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;
+            margin-bottom: 25px; border: 1px solid #72efdd;
+        }
+        .form-group { text-align: left; margin-bottom: 22px; }
+        label { display: block; font-size: 0.9rem; color: #72efdd; margin-bottom: 8px; font-weight: bold; }
+        .birthday-flex { display: flex; align-items: center; gap: 8px; }
+        .birthday-flex input, .birthday-flex select { flex: 1; text-align: center; padding: 12px; background-color: #05010a; border: 1px solid #7209b7; border-radius: 10px; color: #fff; }
+        input[type="text"], select { width: 100%; padding: 14px; background-color: #05010a; border: 1px solid #7209b7; border-radius: 10px; color: #ffffff; font-size: 1rem; box-sizing: border-box; }
+        .submit-btn {
+            background: linear-gradient(90deg, #f72585, #7209b7, #3a0ca3);
+            border: none; border-radius: 10px; color: white; cursor: pointer;
+            font-size: 1.15rem; font-weight: bold; padding: 16px; width: 100%; margin-top: 15px;
+            box-shadow: 0 4px 20px rgba(247, 37, 133, 0.4);
+        }
+        .error-box { background: rgba(230, 57, 70, 0.15); border: 1px solid #e63946; color: #f1faee; border-radius: 10px; padding: 14px; margin-bottom: 25px; text-align: left; }
+        .result-section { margin-top: 40px; padding-top: 30px; border-top: 2px dashed #72efdd; text-align: left; }
+        .result-header { color: #ffb703; font-size: 1.5rem; text-align: center; margin-bottom: 25px; font-weight: bold; }
+        .fortune-card { background: rgba(255, 255, 255, 0.04); border-left: 5px solid #f72585; border-radius: 8px; padding: 20px; margin-bottom: 20px; line-height: 1.8; }
+        .card-title { font-weight: bold; color: #72efdd; margin-bottom: 10px; font-size: 1.1rem; }
+        .more-info-banner {
+            background: linear-gradient(135deg, #3a0ca3 0%, #7209b7 100%);
+            border: 1px dashed #72efdd; border-radius: 16px; padding: 30px; margin-top: 40px; text-align: center;
+        }
+        .more-title { color: #ffb703; font-size: 1.25rem; font-weight: bold; margin-bottom: 12px; }
+        .cta-btn {
+            background-color: #f72585; border: none; border-radius: 24px; color: white;
+            font-weight: bold; padding: 12px 30px; margin-top: 20px; cursor: pointer;
+            box-shadow: 0 0 20px #f72585; font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="fortune-container">
+        <div class="counter-badge" id="counterBadge">総鑑定回数：ロード中...</div>
+        <h1>細目滿子の極秘統計学館</h1>
+        <div class="sub-title">🔮 本質を突く、対面鑑定級の日替わり深層診断 🔮</div>
+        <div class="crystal-ball"></div>
+        <div class="intro-box">「世間一般の安っぽいおみくじとは訳が違う。お前のデータと『今日の潮流』を完全に掛け合わせ、24時間ごとに変わる日替わりの運命を導き出した。毎朝チェックしなさい…。」</div>
+        
+        <div class="error-box" id="errorBox" style="display: none;"></div>
+        
+        <!-- ★修正：onsubmitで確実にJavaScriptの関数を呼び出す形に固定しました -->
+        <form id="fortuneForm" onsubmit="calculateFortune(event)">
+            <div class="form-group">
+                <label for="name">① あなたのお名前</label>
+                <input type="text" id="name" placeholder="例：細木　美子">
+            </div>
+            <div class="form-group">
+                <label>② 生年月日</label>
+                <div class="birthday-flex">
+                    <input type="number" id="year" placeholder="1990"><span>年</span>
+                    <select id="month"><option value="">--</option></select><span>月</span>
+                    <select id="day"><option value="">--</option></select><span>日</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="blood">③ 血液型</label>
+                <select id="blood">
+                    <option value="">-- 選択 --</option>
+                    <option value="A">A型</option>
+                    <option value="B">B型</option>
+                    <option value="O">O型</option>
+                    <option value="AB">AB型</option>
+                </select>
+            </div>
+            <!-- ★修正：このボタンを押した時にページ移動せず、計算処理へ進むようボタン形式を確認 -->
+            <button type="submit" class="submit-btn">今日の運命を紐解く</button>
+        </form>
+        
+        <div class="result-section" id="resultSection" style="display: none;">
+            <div class="result-header">🔮 本日の鑑定書 🔮</div>
+            <div class="fortune-card">
+                <div class="card-title">🌟 【本日のラッキーカラー】</div>
+                <div style="font-weight: bold; color: #ffb703; font-size: 1.1rem;" id="resColor"></div>
+            </div>
+            <div class="fortune-card">
+                <div class="card-title">【本質・全体運】</div>
+                <div id="resGeneral"></div>
+            </div>
+            <div class="fortune-card">
+                <div class="card-title">💞 恋愛・仕事・金銭の個別潮流</div>
+                <div id="resDetail"></div>
+            </div>
+            <div class="more-info-banner">
+                <div class="more-title">⚠️ さらに宿命の深淵へ至りたい者へ</div>
+                <div style="font-size:0.9rem; line-height:1.6; color:#e0aaff;">統計学が示す、あなたの「生涯を共にする運命の人のイニシャル」と「重大な転機」は、個別対面鑑定でのみお伝えしています。細目滿子の特別鑑定枠は残りわずかです…。</div>
+                <!-- ★修正：こちらは「type="button"」にし、上のフォーム送信ボタンと完全に独立させました -->
+                <button type="button" class="cta-btn" onclick="window.open('https://stores.jp', '_blank')">細目滿子の特別対面鑑定を予約する</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const g_pool = ["お前の魂の奥底には「水星」の冷徹なる知性と姓名の「孤高のカリスマ」が交差している。己の直感だけを信じて突き進みなさい。","お前の星位は「木星」のどっしりとした大地の守護を絶大に受けている。お名前に宿るエネルギーは大器晩成の極み。焦らず己の城を広げなさい。","姓名判断と六星占術の交点を見ると、お前は「金星」の華やかさと「天性の直感力」を合わせ持っている。ピンチこそ最大の好機だ。","お前の元に流れる運命の潮流は「土星」の厳格なる安定感を示している。他人に優しく自分に厳しすぎる。まずは己を一番に労わりなさい。"];
+        const d_pool = ["【本日の個別潮流】恋愛運は「静寂の中に潜む強烈な引き寄せ」の相だ。仕事運は鋭い先見の明が天を突くほど冴え渡る。金運は突発的な魔の出費に注意せよ。家の中の水回りを徹底的にピカピカに磨くことで財運が跳ね上がるぞ。","【本日の個別潮流】恋愛運はすぐ身近にいる人物がお前に深い敬愛の念を抱いている。仕事運はこれまでの地道な努力が大きな光を放つ最高の収穫期だ。金運は手堅き運用と知識への投資が爆発的な富を生み出す相だ。","【本日の個別潮流】恋愛運は脈がないと諦めかけていた関係ほど、本日を境に劇的な大逆転を迎える。仕事運はお前の臨機応変な対応力が試される刻だ。金運は投資への勘が異常に冴え渡るが、大切な人と分かち合うことで運が巡る。","【本日の個別潮流】恋愛運は深い慈愛と魂の同調のフェーズだ。仕事運はまさに「組織を裏から支配する最強の黒幕」として無双する運気。金運は守りの財運が極限に高まっている。固定費を徹底的に削ぎ落としなさい。"];
+        const c_arr = ["神秘の深層パープル", "情熱のクリムゾンレッド", "黄金のアンバーゴールド", "新星のコバルトブルー", "清流のミントグリーン", "漆黒のオニキスブラック"];
+
+        window.onload = function() {
+            const baseCount = 12450 + Math.floor(Math.random() * 50);
+            document.getElementById('counterBadge').textContent = "総鑑定回数：" + baseCount.toLocaleString() + " 回";
+            const mSelect = document.getElementById('month'); const dSelect = document.getElementById('day');
+            for(let m=1; m<=12; m++) { mSelect.options.add(new Option(m, m)); }
+            for(let d=1; d<=31; d++) { dSelect.options.add(new Option(d, d)); }
+        };
+
+        function calculateFortune(event) {
+            event.preventDefault(); // ページがどこかへ飛ぶのを完全にストップさせる命令
+            
+            const name = document.getElementById('name').value.trim();
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            const blood = document.getElementById('blood').value;
+            const errorBox = document.getElementById('errorBox');
+            const resultSection = document.getElementById('resultSection');
+
+            if (!name || !year || !month || !day || !blood) {
+                errorBox.style.display = 'block'; errorBox.innerHTML = "<div>⚠️ すべての項目を正しく入力してください。</div>";
+                resultSection.style.display = 'none'; return;
+            }
+            errorBox.style.display = 'none';
+
+            const today = new Date();
+            const yyyymmdd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+            const magic = yyyymmdd + (name + year + month + day + blood).length;
+
+            document.getElementById('resColor').textContent = "◆ " + c_arr[magic % 6] + " ◆";
+            document.getElementById('resGeneral').textContent = g_pool[magic % 4];
+            document.getElementById('resDetail').textContent = d_pool[(magic + 1) % 4];
+
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+            resultSection.style.display = 'block';
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        } // 👈 先生の画面のすぐ後ろに、ここから下をそのまま貼り付けてください！
+
+        // 年入力から月選択へフォーカスを自動移動させる処理
+        document.getElementById('year').addEventListener('input', function() {
+            if (this.value.length === 4) {
+                document.getElementById('month').focus();
+            }
+        });
+    </script>
+</body>
+</html>
