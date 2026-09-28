@@ -2,178 +2,313 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>細目滿子の極秘統計学館</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>細目滿子の極秘統計学館 ＆ 24時間個別AI対面鑑定館</title>
     <style>
+        * { box-sizing: border-box; }
         body {
             background: linear-gradient(135deg, #020005 0%, #0d041a 40%, #1c053a 70%, #020005 100%);
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
             margin: 0; padding: 0; min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
         }
-        .fortune-container {
+        .main-wrapper { width: 100%; padding: 20px 10px; display: flex; justify-content: center; align-items: center; }
+        .container {
             background: rgba(12, 4, 24, 0.95);
             border: 2px solid #ffb703; border-radius: 24px;
             box-shadow: 0 0 40px rgba(199, 125, 255, 0.25);
-            max-width: 650px; width: 95%; margin: 40px auto; padding: 40px;
-            box-sizing: border-box; text-align: center;
+            max-width: 650px; width: 100%; padding: 30px; box-sizing: border-box; text-align: center;
         }
-        h1 { font-size: 2rem; color: #72efdd; text-shadow: 0 0 15px #3a0ca3, 0 0 5px #ffb703; margin-bottom: 5px; }
-        .sub-title { font-size: 0.95rem; color: #ffb703; font-weight: bold; margin-bottom: 30px; letter-spacing: 2px; }
-        .crystal-ball {
-            width: 90px; height: 90px; margin: 0 auto 25px auto;
-            background: radial-gradient(circle, #72efdd 0%, #4cc9f0 50%, #3a0ca3 100%);
-            border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 0 30px #4cc9f0;
-        }
-        .intro-box {
-            font-size: 0.95rem; line-height: 1.8; color: #e0aaff;
-            background: rgba(114, 239, 221, 0.03); padding: 22px;
-            border-radius: 14px; border: 1px dashed #72efdd; border-left: 5px solid #72efdd;
-            text-align: left; margin-bottom: 30px;
-        }
-        .counter-badge {
-            display: inline-block; background: #3a0ca3; color: #72efdd;
-            padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;
-            margin-bottom: 25px; border: 1px solid #72efdd;
-        }
-        .form-group { text-align: left; margin-bottom: 22px; }
+        @media (max-width: 480px) { .container { padding: 20px 15px; } }
+        h1 { font-size: 1.8rem; color: #72efdd; text-shadow: 0 0 15px #3a0ca3, 0 0 5px #ffb703; margin: 0 0 10px 0; }
+        @media (max-width: 480px) { h1 { font-size: 1.5rem; } }
+        .sub-title { font-size: 0.95rem; color: #ffb703; font-weight: bold; margin-bottom: 25px; letter-spacing: 1px; line-height: 1.4; }
+        
+        /* セクション制御 */
+        .section-block { display: none; }
+        .section-block.active { display: block; }
+
+        /* 無料占い */
+        .counter-badge { display: inline-block; background: #3a0ca3; color: #72efdd; padding: 6px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; margin-bottom: 20px; border: 1px solid #72efdd; }
+        .crystal-ball { width: 90px; height: 90px; margin: 0 auto 25px auto; background: radial-gradient(circle, #72efdd 0%, #4cc9f0 50%, #3a0ca3 100%); border-radius: 50%; border: 2px solid #ffffff; box-shadow: 0 0 30px #4cc9f0; }
+        .intro-box { font-size: 0.95rem; line-height: 1.8; color: #e0aaff; background: rgba(114, 239, 221, 0.03); padding: 20px; border-radius: 14px; border: 1px dashed #72efdd; border-left: 5px solid #72efdd; text-align: left; margin-bottom: 25px; }
+        .form-group { text-align: left; margin-bottom: 20px; }
         label { display: block; font-size: 0.9rem; color: #72efdd; margin-bottom: 8px; font-weight: bold; }
-        .birthday-flex { display: flex; align-items: center; gap: 8px; }
-        .birthday-flex input, .birthday-flex select { flex: 1; text-align: center; padding: 12px; background-color: #05010a; border: 1px solid #7209b7; border-radius: 10px; color: #fff; }
+        .birthday-flex { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .birthday-flex input, .birthday-flex select { flex: 1; min-width: 60px; text-align: center; padding: 12px; background-color: #05010a; border: 1px solid #7209b7; border-radius: 10px; color: #fff; font-size: 1rem; box-sizing: border-box; }
+        .birthday-flex span { font-size: 0.9rem; color: #e0aaff; }
         input[type="text"], select { width: 100%; padding: 14px; background-color: #05010a; border: 1px solid #7209b7; border-radius: 10px; color: #ffffff; font-size: 1rem; box-sizing: border-box; }
-        .submit-btn {
-            background: linear-gradient(90deg, #f72585, #7209b7, #3a0ca3);
-            border: none; border-radius: 10px; color: white; cursor: pointer;
-            font-size: 1.15rem; font-weight: bold; padding: 16px; width: 100%; margin-top: 15px;
-            box-shadow: 0 4px 20px rgba(247, 37, 133, 0.4);
-        }
+        .submit-btn { background: linear-gradient(90deg, #f72585, #7209b7, #3a0ca3); border: none; border-radius: 10px; color: white; cursor: pointer; font-size: 1.15rem; font-weight: bold; padding: 16px; width: 100%; margin-top: 10px; box-shadow: 0 4px 20px rgba(247, 37, 133, 0.4); transition: opacity 0.2s; }
+        .submit-btn:hover { opacity: 0.9; }
         .error-box { background: rgba(230, 57, 70, 0.15); border: 1px solid #e63946; color: #f1faee; border-radius: 10px; padding: 14px; margin-bottom: 25px; text-align: left; }
         .result-section { margin-top: 40px; padding-top: 30px; border-top: 2px dashed #72efdd; text-align: left; }
         .result-header { color: #ffb703; font-size: 1.5rem; text-align: center; margin-bottom: 25px; font-weight: bold; }
         .fortune-card { background: rgba(255, 255, 255, 0.04); border-left: 5px solid #f72585; border-radius: 8px; padding: 20px; margin-bottom: 20px; line-height: 1.8; }
         .card-title { font-weight: bold; color: #72efdd; margin-bottom: 10px; font-size: 1.1rem; }
-        .more-info-banner {
-            background: linear-gradient(135deg, #3a0ca3 0%, #7209b7 100%);
-            border: 1px dashed #72efdd; border-radius: 16px; padding: 30px; margin-top: 40px; text-align: center;
-        }
+        .more-info-banner { background: linear-gradient(135deg, #3a0ca3 0%, #7209b7 100%); border: 1px dashed #72efdd; border-radius: 16px; padding: 25px; margin-top: 40px; text-align: center; }
         .more-title { color: #ffb703; font-size: 1.25rem; font-weight: bold; margin-bottom: 12px; }
-        .cta-btn {
-            background-color: #f72585; border: none; border-radius: 24px; color: white;
-            font-weight: bold; padding: 12px 30px; margin-top: 20px; cursor: pointer;
-            box-shadow: 0 0 20px #f72585; font-size: 0.95rem;
-        }
+        .cta-btn { background-color: #f72585; border: none; border-radius: 24px; color: white; font-weight: bold; padding: 14px 30px; margin-top: 20px; cursor: pointer; box-shadow: 0 0 20px #f72585; font-size: 1rem; width: 100%; max-width: 400px; transition: transform 0.2s; }
+        .cta-btn:hover { transform: scale(1.02); }
+
+        /* 有料ロック & 決済ローディング */
+        .price-tag { background: #f72585; color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin-bottom: 20px; box-shadow: 0 0 10px #f72585; }
+        .lock-overlay { background: rgba(11, 3, 20, 0.95); border: 2px dashed #ffb703; border-radius: 14px; padding: 30px 20px; margin-bottom: 10px; text-align: center; }
+        .lock-title { color: #ffb703; font-size: 1.15rem; font-weight: bold; margin-bottom: 12px; line-height: 1.4; }
+        .pay-btn { background: linear-gradient(90deg, #ff9e00, #ff6000); border: none; border-radius: 24px; color: #000000; font-weight: bold; padding: 14px 35px; font-size: 1rem; cursor: pointer; box-shadow: 0 0 20px #ff9e00; margin-top: 15px; width: 100%; max-width: 400px; transition: opacity 0.2s; }
+        .pay-btn:hover { opacity: 0.9; }
+        .loading-box { display: none; margin: 30px 0; text-align: center; }
+        .spinner { width: 50px; height: 50px; margin: 0 auto 15px auto; border: 4px solid rgba(114, 239, 221, 0.1); border-left-color: #ffb703; border-right-color: #72efdd; border-radius: 50%; animation: spin 1s linear infinite; }
+        .loading-text { color: #ffb703; font-size: 1.1rem; font-weight: bold; text-shadow: 0 0 8px rgba(255, 183, 3, 0.5); height: 1.5rem; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* AIチャット */
+        .chat-box { background: #05010a; border: 1px solid #7209b7; border-radius: 14px; height: 380px; overflow-y: auto; padding: 15px; text-align: left; margin-bottom: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 15px; }
+        .msg { max-width: 85%; padding: 12px 16px; border-radius: 14px; line-height: 1.7; font-size: 0.95rem; word-break: break-all; }
+        .msg.mitsuko { background: rgba(114, 239, 221, 0.08); color: #72efdd; border-left: 4px solid #72efdd; align-self: flex-start; }
+        .msg.user { background: #3a0ca3; color: white; align-self: flex-end; }
+        
+        /* ★繋ぎ目★ 次の返信のコードへ続く */
+        .input-area { display: flex; gap: 10px; }
+        .input-area input[type="text"] { flex: 1; }
+        .send-btn { background: #7209b7; border: none; border-radius: 10px; color: white; font-weight: bold; padding: 0 24px; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
+        .send-btn:hover { background: #3a0ca3; }
     </style>
 </head>
 <body>
-    <div class="fortune-container">
-        <div class="counter-badge" id="counterBadge">総鑑定回数：ロード中...</div>
-        <h1>細目滿子の極秘統計学館</h1>
-        <div class="sub-title">🔮 本質を突く、対面鑑定級の日替わり深層診断 🔮</div>
-        <div class="crystal-ball"></div>
-        <div class="intro-box">「世間一般の安っぽいおみくじとは訳が違う。お前のデータと『今日の潮流』を完全に掛け合わせ、24時間ごとに変わる日替わりの運命を導き出した。毎朝チェックしなさい…。」</div>
-        
-        <div class="error-box" id="errorBox" style="display: none;"></div>
-        
-        <!-- ★修正：onsubmitで確実にJavaScriptの関数を呼び出す形に固定しました -->
-        <form id="fortuneForm" onsubmit="calculateFortune(event)">
-            <div class="form-group">
-                <label for="name">① あなたのお名前</label>
-                <input type="text" id="name" placeholder="例：細木　美子">
-            </div>
-            <div class="form-group">
-                <label>② 生年月日</label>
-                <div class="birthday-flex">
-                    <input type="number" id="year" placeholder="1990"><span>年</span>
-                    <select id="month"><option value="">--</option></select><span>月</span>
-                    <select id="day"><option value="">--</option></select><span>日</span>
+
+    <div class="main-wrapper">
+        <div class="container">
+
+            <!-- 1. 無料占いセクション -->
+            <div id="freeFortuneSection" class="section-block active">
+                <div class="counter-badge" id="counterBadge">総鑑定回数：ロード中...</div>
+                <h1>細目滿子の極秘統計学館</h1>
+                <div class="sub-title">🔮 本質を突く、対面鑑定級の日替わり深層診断 🔮</div>
+                <div class="crystal-ball"></div>
+                <div class="intro-box">「世間一般の安っぽいおみくじとは訳が違う。お前のデータと『今日の潮流』を完全に掛け合わせ、24時間ごとに変わる日替わりの運命を導き出した。毎朝チェックしなさい…。」</div>
+                
+                <div class="error-box" id="errorBox" style="display: none;"></div>
+                
+                <form id="fortuneForm" onsubmit="calculateFortune(event)">
+                    <div class="form-group">
+                        <label for="name">① あなたのお名前</label>
+                        <input type="text" id="name" placeholder="例：細木　美子" required>
+                    </div>
+                    <div class="form-group">
+                        <label>② 生年月日</label>
+                        <div class="birthday-flex">
+                            <input type="number" id="year" placeholder="1990" min="1900" max="2100" required><span>年</span>
+                            <select id="month" required><option value="">--</option></select><span>月</span>
+                            <select id="day" required><option value="">--</option></select><span>日</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="blood">③ 血液型</label>
+                        <select id="blood" required>
+                            <option value="">-- 選択 --</option>
+                            <option value="A">A型</option>
+                            <option value="B">B型</option>
+                            <option value="O">O型</option>
+                            <option value="AB">AB型</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">今日の運命を紐解く</button>
+                </form>
+
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <div class="result-header">🔮 本日の鑑定書 🔮</div>
+                    <div class="fortune-card">
+                        <div class="card-title">🌟 【本日のラッキーカラー】</div>
+                        <div style="font-weight: bold; color: #ffb703; font-size: 1.1rem;" id="resColor"></div>
+                    </div>
+                    <div class="fortune-card">
+                        <div class="card-title">【本質・全体運】</div>
+                        <div id="resGeneral"></div>
+                    </div>
+                    <div class="fortune-card">
+                        <div class="card-title">💞 恋愛・仕事・金銭の個別潮流</div>
+                        <div id="resDetail"></div>
+                    </div>
+                    <div class="more-info-banner">
+                        <div class="more-title">⚠️ さらに宿命の深淵へ至りたい者へ</div>
+                        <div style="font-size:0.9rem; line-height:1.6; color:#e0aaff;">統計学が示す、あなたの「生涯を共にする運命の人のイニシャル」と「重大な転機」は、個別対面鑑定でのみお伝えしています。細目滿子の特別鑑定枠は残りわずかです…。</div>
+                        <button type="button" class="cta-btn" onclick="goToPremiumLock()">細目滿子の特別対面鑑定を予約する</button>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="blood">③ 血液型</label>
-                <select id="blood">
-                    <option value="">-- 選択 --</option>
-                    <option value="A">A型</option>
-                    <option value="B">B型</option>
-                    <option value="O">O型</option>
-                    <option value="AB">AB型</option>
-                </select>
+
+            <!-- 2. 有料ロック & 決済ローディングセクション -->
+            <div id="premiumLockSection" class="section-block">
+                <h1>細目滿子の極秘AI対面鑑定館</h1>
+                <div class="price-tag">プレミアム個別チャット鑑定：1回 300円</div>
+                
+                <div id="lockArea" class="lock-overlay">
+                    <div class="lock-title">🚨 これより先は、47年の眼が宿る深層対面鑑定となります</div>
+                    <p style="font-size: 0.85rem; color: #e0aaff; line-height: 1.6; margin-bottom: 20px;">
+                        世間一般の安っぽいAIおみくじとは訳が違うよ。<br>
+                        お前が文字を打ち込むたび、細目滿子の人間観察眼がお前の宿命の潮流をリアルタイムで計算し、24時間いつでも直接対話で導き出そう。覚悟を持ってお進み。
+                    </p>
+                    <button type="button" id="payButton" class="pay-btn" onclick="unlock鑑定()">
+                        300円で細目滿子のAI対面鑑定を解放する
+                    </button>
+                </div>
+
+                <div id="loadingArea" class="loading-box">
+                    <div class="spinner"></div>
+                    <div id="loadingText" class="loading-text">御入金を確認中...</div>
+                </div>
             </div>
-            <!-- ★修正：このボタンを押した時にページ移動せず、計算処理へ進むようボタン形式を確認 -->
-            <button type="submit" class="submit-btn">今日の運命を紐解く</button>
-        </form>
-        
-        <div class="result-section" id="resultSection" style="display: none;">
-            <div class="result-header">🔮 本日の鑑定書 🔮</div>
-            <div class="fortune-card">
-                <div class="card-title">🌟 【本日のラッキーカラー】</div>
-                <div style="font-weight: bold; color: #ffb703; font-size: 1.1rem;" id="resColor"></div>
+
+            <!-- 3. AIチャットセクション -->
+            <div id="activeChatSection" class="section-block">
+                <h1>細目滿子の極秘AI対面鑑定館</h1>
+                <div class="price-tag">プレミアム個別チャット鑑定：1回 300円</div>
+
+                <div class="chat-box" id="chatBox">
+                    <div class="msg mitsuko">「よくおいでなすった、細目滿子さ。お前がわざわざ有料の門をくぐって私の前に座ったということは、それ相応の覚悟があるんだろうね。さあ、遠慮はいらないよ、お前の生年月日と、今その胸を一番激しく痛めている『本当の悩み』をここに吐き出しなさい。しっかり受け止めてやるからね…。」</div>
+                </div>
+                <form class="input-area" onsubmit="sendMessage(event)">
+                    <input type="text" id="userInput" placeholder="細目滿子に悩みを打ち明ける..." required>
+                    <button type="submit" class="send-btn">話す</button>
+                </form>
             </div>
-            <div class="fortune-card">
-                <div class="card-title">【本質・全体運】</div>
-                <div id="resGeneral"></div>
-            </div>
-            <div class="fortune-card">
-                <div class="card-title">💞 恋愛・仕事・金銭の個別潮流</div>
-                <div id="resDetail"></div>
-            </div>
-            <div class="more-info-banner">
-                <div class="more-title">⚠️ さらに宿命の深淵へ至りたい者へ</div>
-                <div style="font-size:0.9rem; line-height:1.6; color:#e0aaff;">統計学が示す、あなたの「生涯を共にする運命の人のイニシャル」と「重大な転機」は、個別対面鑑定でのみお伝えしています。細目滿子の特別鑑定枠は残りわずかです…。</div>
-                <!-- ★修正：こちらは「type="button"」にし、上のフォーム送信ボタンと完全に独立させました -->
-                <button type="button" class="cta-btn" onclick="window.open('https://stores.jp', '_blank')">細目滿子の特別対面鑑定を予約する</button>
-            </div>
+
         </div>
     </div>
-    <script>
-        const g_pool = ["お前の魂の奥底には「水星」の冷徹なる知性と姓名の「孤高のカリスマ」が交差している。己の直感だけを信じて突き進みなさい。","お前の星位は「木星」のどっしりとした大地の守護を絶大に受けている。お名前に宿るエネルギーは大器晩成の極み。焦らず己の城を広げなさい。","姓名判断と六星占術の交点を見ると、お前は「金星」の華やかさと「天性の直感力」を合わせ持っている。ピンチこそ最大の好機だ。","お前の元に流れる運命の潮流は「土星」の厳格なる安定感を示している。他人に優しく自分に厳しすぎる。まずは己を一番に労わりなさい。"];
-        const d_pool = ["【本日の個別潮流】恋愛運は「静寂の中に潜む強烈な引き寄せ」の相だ。仕事運は鋭い先見の明が天を突くほど冴え渡る。金運は突発的な魔の出費に注意せよ。家の中の水回りを徹底的にピカピカに磨くことで財運が跳ね上がるぞ。","【本日の個別潮流】恋愛運はすぐ身近にいる人物がお前に深い敬愛の念を抱いている。仕事運はこれまでの地道な努力が大きな光を放つ最高の収穫期だ。金運は手堅き運用と知識への投資が爆発的な富を生み出す相だ。","【本日の個別潮流】恋愛運は脈がないと諦めかけていた関係ほど、本日を境に劇的な大逆転を迎える。仕事運はお前の臨機応変な対応力が試される刻だ。金運は投資への勘が異常に冴え渡るが、大切な人と分かち合うことで運が巡る。","【本日の個別潮流】恋愛運は深い慈愛と魂の同調のフェーズだ。仕事運はまさに「組織を裏から支配する最強の黒幕」として無双する運気。金運は守りの財運が極限に高まっている。固定費を徹底的に削ぎ落としなさい。"];
-        const c_arr = ["神秘の深層パープル", "情熱のクリムゾンレッド", "黄金のアンバーゴールド", "新星のコバルトブルー", "清流のミントグリーン", "漆黒のオニキスブラック"];
 
-        window.onload = function() {
-            const baseCount = 12450 + Math.floor(Math.random() * 50);
-            document.getElementById('counterBadge').textContent = "総鑑定回数：" + baseCount.toLocaleString() + " 回";
-            const mSelect = document.getElementById('month'); const dSelect = document.getElementById('day');
-            for(let m=1; m<=12; m++) { mSelect.options.add(new Option(m, m)); }
-            for(let d=1; d<=31; d++) { dSelect.options.add(new Option(d, d)); }
-        };
+<script>
+    /* ==========================================================================
+       共通・初期化処理 (無料占い)
+       ========================================================================== */
+    const g_pool = [
+        "お前の魂の奥底には「水星」の冷徹なる知性と姓名の「孤高のカリスマ」が交差している。己の直感だけを信じて突き進みなさい。",
+        "お前の星位は「木星」のどっしりとした大地の守護を絶大に受けている。お名前に宿るエネルギーは大器晩成の極み。焦らず己の城を広げなさい。",
+        "姓名判断と六星占術の交点を見ると、お前は「金星」の華やかさと「天性の直感力」を合わせ持っている。ピンチこそ最大の好機だ。",
+        "お前の元に流れる運命の潮流は「土星」の厳格なる安定感を示している。他人に優しく自分に厳しすぎる。まずは己を一番に労わりなさい。"
+    ];
+    const d_pool = [
+        "【本日の個別潮流】恋愛運は「静寂の中に潜む強烈な引き寄せ」の相だ。仕事運は鋭い先見の明が天を突くほど冴え渡る。金運は突発的な魔の出費に注意せよ。家の中の水回りを徹底的にピカピカに磨くことで財運が跳ね上がるぞ。",
+        "【本日の個別潮流】恋愛運はすぐ身近にいる人物がお前に深い敬愛の念を抱いている。仕事運はこれまでの地道な努力が大きな光を放つ最高の収穫期だ。金運は手堅き運用と知識への投資が爆発的な富を生み出す相だ。",
+        "【本日の個別潮流】恋愛運は脈がないと諦めかけていた関係ほど、本日を境に劇的な大逆転を迎える。仕事運はお前の臨機応変な対応力が試される刻だ。金運は投資への勘が異常に冴え渡るが、大切な人と分かち合うことで運が巡る。",
+        "【本日の個別潮流】恋愛運は深い慈愛と魂の同調のフェーズだ。仕事運はまさに「組織を裏から支配する最強の黒幕」として無双する運気。金運は守りの財運が極限に高まっている。固定費を徹底的に削ぎ落としなさい。"
+    ];
+    const c_arr = ["神秘の深層パープル", "情熱のクリムゾンレッド", "黄金のアンバーゴールド", "新星のコバルトブルー", "清流のミントグリーン", "漆黒 of オニキスブラック"];
 
-        function calculateFortune(event) {
-            event.preventDefault(); // ページがどこかへ飛ぶのを完全にストップさせる命令
+    window.onload = function() {
+        const baseCount = 12450 + Math.floor(Math.random() * 50);
+        document.getElementById('counterBadge').textContent = "総鑑定回数：" + baseCount.toLocaleString() + " 回";
+        
+        const mSelect = document.getElementById('month'); 
+        const dSelect = document.getElementById('day');
+        for(let m=1; m<=12; m++) { mSelect.options.add(new Option(m, m)); }
+        for(let d=1; d<=31; d++) { dSelect.options.add(new Option(d, d)); }
+    };
+
+    document.getElementById('year').addEventListener('input', function() {
+        if (this.value.length === 4) {
+            document.getElementById('month').focus();
+        }
+    });
+
+    function calculateFortune(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById('name').value.trim();
+        const year = document.getElementById('year').value;
+        const month = document.getElementById('month').value;
+        const day = document.getElementById('day').value;
+        const blood = document.getElementById('blood').value;
+        const resultSection = document.getElementById('resultSection');
+
+        const today = new Date();
+        const yyyymmdd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        const magic = yyyymmdd + (name + year + month + day + blood).length;
+
+        document.getElementById('resColor').textContent = "◆ " + c_arr[magic % 6] + " ◆";
+        document.getElementById('resGeneral').textContent = g_pool[magic % 4];
+        document.getElementById('resDetail').textContent = d_pool[(magic + 1) % 4];
+
+        resultSection.style.display = 'block';
+        setTimeout(() => {
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+    }
+
+    /* 画面遷移・決済ローディング */
+    function goToPremiumLock() {
+        document.getElementById('freeFortuneSection').classList.remove('active');
+        document.getElementById('premiumLockSection').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function unlock鑑定() {
+        // ──────────────────────────────────────────────────────────────────
+        // 【開発者メモ】
+        // 将来ここにSTORES等の外部決済URLへの遷移（window.location.href = 'STORESの決済リンク';）
+        // を挟む場合は、以下の演出コードと差し替えてください。
+        // ──────────────────────────────────────────────────────────────────
+        const lockArea = document.getElementById('lockArea');
+        const loadingArea = document.getElementById('loadingArea');
+        const loadingText = document.getElementById('loadingText');
+
+        lockArea.style.display = 'none';
+        loadingArea.style.display = 'block';
+
+        setTimeout(() => {
+            loadingText.textContent = "宿命 of 接続の回線を開通中...";
+        }, 700);
+
+        setTimeout(() => {
+            document.getElementById('premiumLockSection').classList.remove('active');
+            document.getElementById('activeChatSection').classList.add('active');
+            const chatBox = document.getElementById('chatBox');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 1500);
+    }
+
+    /* 有料AIチャット処理 */
+    async function sendMessage(event) {
+        event.preventDefault();
+        const input = document.getElementById('userInput');
+        const chatBox = document.getElementById('chatBox');
+        const text = input.value.trim();
+        if (!text) return;
+
+        // ユーザーの発言を画面に追加
+        const userDiv = document.createElement('div');
+        userDiv.className = 'msg user';
+        userDiv.textContent = text;
+        chatBox.appendChild(userDiv);
+        input.value = '';
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // 霊視中メッセージの表示
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'msg mitsuko';
+        loadingDiv.textContent = "「ふむ…お前の言葉の波動から、今、宿命の潮流を手繰り寄せているよ。ちょっとお待ちな…」";
+        chatBox.appendChild(loadingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // 2秒後にランダムで長文返信
+        setTimeout(() => {
+            loadingDiv.remove();
             
-            const name = document.getElementById('name').value.trim();
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const day = document.getElementById('day').value;
-            const blood = document.getElementById('blood').value;
-            const errorBox = document.getElementById('errorBox');
-            const resultSection = document.getElementById('resultSection');
-
-            if (!name || !year || !month || !day || !blood) {
-                errorBox.style.display = 'block'; errorBox.innerHTML = "<div>⚠️ すべての項目を正しく入力してください。</div>";
-                resultSection.style.display = 'none'; return;
-            }
-            errorBox.style.display = 'none';
-
-            const today = new Date();
-            const yyyymmdd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-            const magic = yyyymmdd + (name + year + month + day + blood).length;
-
-            document.getElementById('resColor').textContent = "◆ " + c_arr[magic % 6] + " ◆";
-            document.getElementById('resGeneral').textContent = g_pool[magic % 4];
-            document.getElementById('resDetail').textContent = d_pool[(magic + 1) % 4];
-
-            resultSection.style.display = 'block';
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-            resultSection.style.display = 'block';
-            resultSection.scrollIntoView({ behavior: 'smooth' });
-        } // 👈 先生の画面のすぐ後ろに、ここから下をそのまま貼り付けてください！
-
-        // 年入力から月選択へフォーカスを自動移動させる処理
-        document.getElementById('year').addEventListener('input', function() {
-            if (this.value.length === 4) {
-                document.getElementById('month').focus();
-            }
-        });
-    </script>
+            const responses = [
+                "「甘えるんじゃないよ！そんな言い訳で人生ごまかせると思っているのかい？…でもね、お前が誰よりも陰で努力を重ねてきたことは、この細目滿子の眼には全部視えているよ。己の直感だけを信じて突き進みなさい！」",
+                "「お前、ピンチの顔をしてやってくる出来事から、また逃げ出すつもりかい？…だけどね、お前の星位は『木星』のどっしりとした大地の守護を絶大に受けているんだ。焦るんじゃないよ。1ミリずつ己の領土を広げていきなさい。」",
+                "「何をそんなにビクビク怯えているんだい！他人の顔色ばかり伺うなんて、魂に対する最大の裏切りだよ！…でもね、私は知っているよ。お前が本当はどれほど深い優しさを持っているかをね。直球で想いを伝えなさい。潮目が変わるよ！」",
+                "「他人に優しく自分に厳しすぎるあまり、また一人で孤独を隠して泣いているんじゃないだろうね？…お前の元に流れる潮流は『土星』の厳格なる安定感さ。もっと自分を一番に労わって、王様のように構えておいで。話しなさい…。」"
+            ];
+            
+            const randomReply = responses[Math.floor(Math.random() * responses.length)];
+            const mitsukoDiv = document.createElement('div');
+            mitsukoDiv.className = 'msg mitsuko';
+            mitsukoDiv.textContent = randomReply;
+            chatBox.appendChild(mitsukoDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 2000);
+    }
+</script>
 </body>
 </html>
