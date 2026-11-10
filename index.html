@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="細目滿子の極秘統計学館。名前・生年月日・血液型から、24時間ごとに変わる今日の運命を鑑定します。全体運・恋愛運・仕事運・金運・健康運、ラッキーカラーとラッキーアイテムまで毎日無料でチェック。">
+<meta property="og:title" content="細目滿子の極秘統計学館｜24時間ごとに変わる日替わり運命診断">
+<meta property="og:description" content="お前のデータと『今日の潮流』を掛け合わせた、日替わりの深層診断。毎朝チェックしなさい…。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chukey-channel.github.io/uranai/">
+<meta property="og:image" content="https://chukey-channel.github.io/uranai/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
     <title>細目滿子の極秘統計学館 ＆ 24時間個別AI対面鑑定館</title>
     <style>
         * { box-sizing: border-box; }
@@ -51,6 +58,15 @@
         .cta-btn { background-color: #f72585; border: none; border-radius: 24px; color: white; font-weight: bold; padding: 14px 30px; margin-top: 20px; cursor: pointer; box-shadow: 0 0 20px #f72585; font-size: 1rem; width: 100%; max-width: 400px; transition: transform 0.2s; }
         .cta-btn:hover { transform: scale(1.02); }
 
+.star { color: #ffb703; font-size: 1.15rem; letter-spacing: 2px; }
+.cat-row { margin-bottom: 10px; line-height: 1.7; }
+.cat-name { font-weight: bold; color: #72efdd; }
+.share-area { text-align: center; margin: 25px 0 5px 0; }
+.share-title { color: #ffb703; font-weight: bold; margin-bottom: 12px; font-size: 0.95rem; }
+.share-btn { display: inline-block; border: none; border-radius: 24px; color: #fff; font-weight: bold; padding: 12px 26px; margin: 4px; cursor: pointer; font-size: 0.95rem; text-decoration: none; }
+.share-x { background: #000; border: 1px solid #fff; }
+.share-line { background: #06c755; }
+.tomorrow-box { background: rgba(255, 183, 3, 0.08); border: 1px dashed #ffb703; border-radius: 10px; padding: 14px 18px; margin-top: 20px; line-height: 1.7; font-size: 0.95rem; }
         /* 有料ロック & 決済ローディング */
         .price-tag { background: #f72585; color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; display: inline-block; margin-bottom: 20px; box-shadow: 0 0 10px #f72585; }
         .lock-overlay { background: rgba(11, 3, 20, 0.95); border: 2px dashed #ffb703; border-radius: 14px; padding: 30px 20px; margin-bottom: 10px; text-align: center; }
@@ -104,9 +120,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="blood">③ 血液型</label>
-                        <select id="blood" required>
-                            <option value="">-- 選択 --</option>
+                        <label for="blood">③ 血液型（任意）</label>
+                        <select id="blood">
+                            <option value="">-- 選択しない --</option>
                             <option value="A">A型</option>
                             <option value="B">B型</option>
                             <option value="O">O型</option>
@@ -127,9 +143,31 @@
                         <div id="resGeneral"></div>
                     </div>
                     <div class="fortune-card">
-                        <div class="card-title">💞 恋愛・仕事・金銭の個別潮流</div>
-                        <div id="resDetail"></div>
-                    </div>
+<div class="card-title">💞 恋愛・仕事・金銭の個別潮流</div>
+<div id="resDetail"></div>
+</div>
+<div class="fortune-card">
+<div class="card-title">📊 本日の個別運勢</div>
+<div class="cat-row"><span class="cat-name">💞 恋愛運</span> <span class="star" id="starLove"></span><br><span id="resLove"></span></div>
+<div class="cat-row"><span class="cat-name">💼 仕事運</span> <span class="star" id="starWork"></span><br><span id="resWork"></span></div>
+<div class="cat-row"><span class="cat-name">💰 金運</span> <span class="star" id="starMoney"></span><br><span id="resMoney"></span></div>
+<div class="cat-row" style="margin-bottom:0;"><span class="cat-name">🍀 健康運</span> <span class="star" id="starHealth"></span><br><span id="resHealth"></span></div>
+</div>
+<div class="fortune-card">
+<div class="card-title">🎁 本日のラッキーアイテム＆数字</div>
+<div id="resItem" style="font-weight: bold; color: #ffb703;"></div>
+<div id="resNumber" style="margin-top: 6px;"></div>
+</div>
+<div class="tomorrow-box">
+<b style="color:#ffb703;">🌙 明日の運命の予告</b><br>
+<span id="resTomorrow"></span><br>
+<span style="font-size:0.85rem; color:#e0aaff;">※鑑定は毎日0時に切り替わります。明日もチェックしなさい…。</span>
+</div>
+<div class="share-area">
+<div class="share-title">🔮 この鑑定結果をシェアする</div>
+<a class="share-btn share-x" id="shareX" href="#" target="_blank" rel="noopener">𝕏 でポスト</a>
+<a class="share-btn share-line" id="shareLINE" href="#" target="_blank" rel="noopener">LINEで送る</a>
+</div>
                     <div class="more-info-banner">
                         <div class="more-title">⚠️ さらに宿命の深淵へ至りたい者へ</div>
                         <div style="font-size:0.9rem; line-height:1.6; color:#e0aaff;">統計学が示す、あなたの「生涯を共にする運命の人のイニシャル」と「重大な転機」は、個別対面鑑定でのみお伝えしています。細目滿子の特別鑑定枠は残りわずかです…。</div>
@@ -181,59 +219,166 @@
     /* ==========================================================================
        共通・初期化処理 (無料占い)
        ========================================================================== */
-    const g_pool = [
-        "お前の魂の奥底には「水星」の冷徹なる知性と姓名の「孤高のカリスマ」が交差している。己の直感だけを信じて突き進みなさい。",
-        "お前の星位は「木星」のどっしりとした大地の守護を絶大に受けている。お名前に宿るエネルギーは大器晩成の極み。焦らず己の城を広げなさい。",
-        "姓名判断と六星占術の交点を見ると、お前は「金星」の華やかさと「天性の直感力」を合わせ持っている。ピンチこそ最大の好機だ。",
-        "お前の元に流れる運命の潮流は「土星」の厳格なる安定感を示している。他人に優しく自分に厳しすぎる。まずは己を一番に労わりなさい。"
-    ];
-    const d_pool = [
-        "【本日の個別潮流】恋愛運は「静寂の中に潜む強烈な引き寄せ」の相だ。仕事運は鋭い先見の明が天を突くほど冴え渡る。金運は突発的な魔の出費に注意せよ。家の中の水回りを徹底的にピカピカに磨くことで財運が跳ね上がるぞ。",
-        "【本日の個別潮流】恋愛運はすぐ身近にいる人物がお前に深い敬愛の念を抱いている。仕事運はこれまでの地道な努力が大きな光を放つ最高の収穫期だ。金運は手堅き運用と知識への投資が爆発的な富を生み出す相だ。",
-        "【本日の個別潮流】恋愛運は脈がないと諦めかけていた関係ほど、本日を境に劇的な大逆転を迎える。仕事運はお前の臨機応変な対応力が試される刻だ。金運は投資への勘が異常に冴え渡るが、大切な人と分かち合うことで運が巡る。",
-        "【本日の個別潮流】恋愛運は深い慈愛と魂の同調のフェーズだ。仕事運はまさに「組織を裏から支配する最強の黒幕」として無双する運気。金運は守りの財運が極限に高まっている。固定費を徹底的に削ぎ落としなさい。"
-    ];
-    const c_arr = ["神秘の深層パープル", "情熱のクリムゾンレッド", "黄金のアンバーゴールド", "新星のコバルトブルー", "清流のミントグリーン", "漆黒 of オニキスブラック"];
+// === PURE LOGIC START ===
+// 名前・生年月日・血液型と日付から「その人だけの今日の値」を作る本格ハッシュ。
+// 以前の版は「文字数」だけだったので、同じ日はほとんどの人が同じ結果になっていた。
+function hashSeed(str) {
+let h1 = 5381, h2 = 52711;
+for (let i = 0; i < str.length; i++) {
+const c = str.charCodeAt(i);
+h1 = ((h1 * 33) ^ c) >>> 0;
+h2 = ((h2 * 31) + c) >>> 0;
+}
+let h = (h1 * 1000003 + h2) >>> 0;
+// 最終混合（avalanche）：下位ビットの偏りを消して、プールの全要素に行き渡らせる
+h ^= h >>> 16;
+h = Math.imul(h, 0x45d9f3b);
+h ^= h >>> 16;
+h = Math.imul(h, 0x45d9f3b);
+h ^= h >>> 16;
+return h >>> 0;
+}
+function pick(seedStr, pool) { return pool[hashSeed(seedStr) % pool.length];}
+function stars(seedStr) { return (hashSeed(seedStr) % 5) + 1;}
+function starText(n) { return "★".repeat(n) + "☆".repeat(5 - n);}
 
-    window.onload = function() {
-        const baseCount = 12450 + Math.floor(Math.random() * 50);
-        document.getElementById('counterBadge').textContent = "総鑑定回数：" + baseCount.toLocaleString() + " 回";
-        
-        const mSelect = document.getElementById('month'); 
-        const dSelect = document.getElementById('day');
-        for(let m=1; m<=12; m++) { mSelect.options.add(new Option(m, m)); }
-        for(let d=1; d<=31; d++) { dSelect.options.add(new Option(d, d)); }
-    };
+const g_pool = [
+"お前の魂の奥底には「水星」の冷徹なる知性と姓名の「孤高のカリスマ」が交差している。己の直感だけを信じて突き進みなさい。",
+"お前の星位は「木星」のどっしりとした大地の守護を絶大に受けている。お名前に宿るエネルギーは大器晩成の極み。焦らず己の城を広げなさい。",
+"姓名判断と六星占術の交点を見ると、お前は「金星」の華やかさと「天性の直感力」を合わせ持っている。ピンチこそ最大の好機だ。",
+"お前の元に流れる運命の潮流は「土星」の厳格なる安定感を示している。他人に優しく自分に厳しすぎる。まずは己を一番に労わりなさい。",
+"「火星」の炎がお前の背中を押す一日だ。迷って止まるより、まず一歩。動いた先でしか見えない景色が今日のお前を待っている。",
+"「月」の潮流が満ちる日。言葉にしなかった本音ほど、今日は静かに力を持つ。無理に明るく振る舞わず、己の声を聞きなさい。",
+"「太陽」の加護が真正面から差し込む好日だ。人前に出ることを避けるな。お前の存在そのものが、誰かの一日を変える。",
+"「海王星」の夢見る力が冴える日。ぼんやり浮かんだ妄想を笑うな。その中に、次の扉の鍵が紛れ込んでいるぞ。"
+];
+const d_pool = [
+"恋愛運は「静寂の中に潜む強烈な引き寄せ」の相だ。仕事運は鋭い先見の明が天を突くほど冴え渡る。金運は突発的な魔の出費に注意せよ。家の中の水回りを徹底的にピカピカに磨くことで財運が跳ね上がるぞ。",
+"恋愛運はすぐ身近にいる人物がお前に深い敬愛の念を抱いている。仕事運はこれまでの地道な努力が大きな光を放つ最高の収穫期だ。金運は手堅き運用と知識への投資が爆発的な富を生み出す相だ。",
+"恋愛運は脈がないと諦めかけていた関係ほど、本日を境に劇的な大逆転を迎える。仕事運はお前の臨機応変な対応力が試される刻だ。金運は投資への勘が異常に冴え渡るが、大切な人と分かち合うことで運が巡る。",
+"恋愛運は深い慈愛と魂の同調のフェーズだ。仕事運はまさに「組織を裏から支配する最強の黒幕」として無双する運気。金運は守りの財運が極限に高まっている。固定費を徹底的に削ぎ落としなさい。"
+];
+const love_pool = [
+"静かな場所での何気ない会話が、距離を一気に縮める。焦って結論を出すな。",
+"身近な人物の何気ない優しさに、今日は素直に甘えてみなさい。恋の芽は足元にある。",
+"連絡は短く、しかし温かく。長文の言い訳より、一言の本音が心を掴む日だ。",
+"昔の縁がふと蘇る兆し。懐かしさに流されず、今の己の気持ちを優先しなさい。",
+"好意は隠すほど伝わらない日だ。小さな勇気で、いつもより一歩だけ近づきなさい。"
+];
+const work_pool = [
+"地道な作業ほど今日は評価に直結する。手を抜くな、全部視られているぞ。",
+"会議や打ち合わせでお前の発言が流れを変える。黙って座るな、口を開きなさい。",
+"段取りの見直しが吉。面倒な確認作業こそ、後の大きな失敗を防ぐ盾になる。",
+"助けを求めることを恥じるな。今日の借りは、近い将来、力で返せる。",
+"新しい道具ややり方を試すと吉。古い習慣にしがみつくほど運が痩せる日だ。"
+];
+const money_pool = [
+"衝動買いに魔が潜む。欲しい物は一晩寝かせてから決めなさい。",
+"知識への出費は今日の最良の投資だ。本や学びに使った金は倍になって還る。",
+"財布の中のレシートを整理しなさい。小さな無駄の可視化が財運の入口だ。",
+"人へのご馳走は惜しむな。今日の奢りは巡り巡って大きな縁を連れてくる。",
+"固定費の見直し日和。惰性で払い続けている契約がないか、目を光らせなさい。"
+];
+const health_pool = [
+"首と肩に疲れが溜まる兆し。湯船にゆっくり浸かって、体を解きほぐしなさい。",
+"睡眠の質が運気を左右する日。寝る前のスマホはほどほどにしなさい。",
+"水分不足が集中力を奪う。意識して水を飲むだけで午後が変わるぞ。",
+"食べ過ぎ注意の日。腹八分に留めることが、明日への最高の投資だ。",
+"軽い散歩が血流と運を同時に回す。遠回りして帰るくらいでちょうどいい。"
+];
+const c_arr = ["神秘の深層パープル", "情熱のクリムゾンレッド", "黄金のアンバーゴールド", "新星のコバルトブルー", "清流のミントグリーン", "漆黒 of オニキスブラック", "黎明のサンライズオレンジ", "月光のシルバーホワイト", "深海のインディゴネイビー", "桜嵐のピンク"];
+const item_pool = ["白いハンカチ", "温かいほうじ茶", "革の財布", "青いペン", "小さな観葉植物", "銀のスプーン", "ポケットサイズの手鏡", "黒い手帳", "柑橘系の香り", "四角いチョコレート", "木の櫛", "新しい靴下"];
+const tomorrow_pool = [
+"明日のお前には「再会」の影が差す。懐かしい名前が画面に光るかもしれないぞ…。",
+"明日の潮流は「決断」。先延ばしにしてきた件に、ついに白黒つける刻が来る…。",
+"明日のお前は「財」の気配が濃い。財布の紐と心の準備をしておきなさい…。",
+"明日の運命は「休息」が鍵。頑張るなとは言わないが、休む勇気が運を呼ぶ…。",
+"明日のお前には「挑戦」の風が吹く。小さな一歩が、大きなうねりになる予感…。",
+"明日の潮流は「言葉」。何気ない一言が、誰かの一生を左右するかもしれない…。"
+];
 
-    document.getElementById('year').addEventListener('input', function() {
-        if (this.value.length === 4) {
-            document.getElementById('month').focus();
-        }
-    });
+function fortuneFor(name, year, month, day, blood, dateObj) {
+const ymd = dateObj.getFullYear() * 10000 + (dateObj.getMonth() + 1) * 100 + dateObj.getDate();
+const base = name + "|" + year + "-" + month + "-" + day + "|" + blood + "|" + ymd;
+return {
+color: pick(base + "#color", c_arr),
+general: pick(base + "#general", g_pool),
+detail: pick(base + "#detail", d_pool),
+love: pick(base + "#love", love_pool), loveStars: stars(base + "#loveS"),
+work: pick(base + "#work", work_pool), workStars: stars(base + "#workS"),
+money: pick(base + "#money", money_pool), moneyStars: stars(base + "#moneyS"),
+health: pick(base + "#health", health_pool), healthStars: stars(base + "#healthS"),
+item: pick(base + "#item", item_pool),
+number: (hashSeed(base + "#num") % 99) + 1
+};
+}
+// === PURE LOGIC END ===
 
-    function calculateFortune(event) {
-        event.preventDefault();
-        
-        const name = document.getElementById('name').value.trim();
-        const year = document.getElementById('year').value;
-        const month = document.getElementById('month').value;
-        const day = document.getElementById('day').value;
-        const blood = document.getElementById('blood').value;
-        const resultSection = document.getElementById('resultSection');
+window.onload = function() {
+const baseCount = 12450 + Math.floor(Math.random() * 50);
+document.getElementById('counterBadge').textContent = "総鑑定回数：" + baseCount.toLocaleString() + " 回";
 
-        const today = new Date();
-        const yyyymmdd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-        const magic = yyyymmdd + (name + year + month + day + blood).length;
+const mSelect = document.getElementById('month');
+const dSelect = document.getElementById('day');
+for(let m=1; m<=12; m++) { mSelect.options.add(new Option(m, m));}
+for(let d=1; d<=31; d++) { dSelect.options.add(new Option(d, d));}
+};
 
-        document.getElementById('resColor').textContent = "◆ " + c_arr[magic % 6] + " ◆";
-        document.getElementById('resGeneral').textContent = g_pool[magic % 4];
-        document.getElementById('resDetail').textContent = d_pool[(magic + 1) % 4];
+document.getElementById('year').addEventListener('input', function() {
+if (this.value.length === 4) {
+document.getElementById('month').focus();
+}
+});
 
-        resultSection.style.display = 'block';
-        setTimeout(() => {
-            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
-    }
+function calculateFortune(event) {
+event.preventDefault();
+
+const name = document.getElementById('name').value.trim();
+const year = document.getElementById('year').value;
+const month = document.getElementById('month').value;
+const day = document.getElementById('day').value;
+const blood = document.getElementById('blood').value;
+const resultSection = document.getElementById('resultSection');
+
+const today = new Date();
+const f = fortuneFor(name, year, month, day, blood, today);
+
+document.getElementById('resColor').textContent = "◆ " + f.color + " ◆";
+document.getElementById('resGeneral').textContent = f.general;
+document.getElementById('resDetail').textContent = f.detail;
+document.getElementById('starLove').textContent = starText(f.loveStars);
+document.getElementById('resLove').textContent = f.love;
+document.getElementById('starWork').textContent = starText(f.workStars);
+document.getElementById('resWork').textContent = f.work;
+document.getElementById('starMoney').textContent = starText(f.moneyStars);
+document.getElementById('resMoney').textContent = f.money;
+document.getElementById('starHealth').textContent = starText(f.healthStars);
+document.getElementById('resHealth').textContent = f.health;
+document.getElementById('resItem').textContent = "◆ " + f.item + " ◆";
+document.getElementById('resNumber').textContent = "ラッキーナンバー：" + f.number;
+
+// 明日の予告（明日の日付で先に計算しておく）
+const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+const tBase = name + "|" + year + "-" + month + "-" + day + "|" + blood + "|" +
+(tomorrow.getFullYear() * 10000 + (tomorrow.getMonth() + 1) * 100 + tomorrow.getDate());
+document.getElementById('resTomorrow').textContent = pick(tBase + "#tomorrow", tomorrow_pool);
+
+// シェアボタン（結果の要約を入れて投稿できるようにする）
+const pageUrl = "https://chukey-channel.github.io/uranai/";
+const shareText = "🔮細目滿子の本日の鑑定\n" +
+"ラッキーカラー：" + f.color + "\nラッキーアイテム：" + f.item + "／ラッキーナンバー：" + f.number + "\n" +
+"恋愛運" + starText(f.loveStars) + " 仕事運" + starText(f.workStars) + " 金運" + starText(f.moneyStars) + "\n" +
+"お前も毎朝チェックしなさい…。";
+document.getElementById('shareX').href =
+"https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(pageUrl);
+document.getElementById('shareLINE').href =
+"https://line.me/R/msg/text/?" + encodeURIComponent(shareText + "\n" + pageUrl);
+
+resultSection.style.display = 'block';
+setTimeout(() => {
+resultSection.scrollIntoView({ behavior: 'smooth', block: 'start'});
+}, 50);
+}
 
     /* 画面遷移・決済ローディング */
     function goToPremiumLock() {
