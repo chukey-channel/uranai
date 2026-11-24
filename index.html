@@ -92,6 +92,26 @@
         .input-area input[type="text"] { flex: 1; }
         .send-btn { background: #7209b7; border: none; border-radius: 10px; color: white; font-weight: bold; padding: 0 24px; cursor: pointer; font-size: 1rem; transition: background 0.2s; }
         .send-btn:hover { background: #3a0ca3; }
+
+        /* プレミアム深層鑑定 */
+        .pass-input { width: 100%; max-width: 400px; padding: 12px 16px; border-radius: 10px; border: 1px solid #ffb703; background: #0d0221; color: #fff; font-size: 1rem; text-align: center; margin-top: 10px; box-sizing: border-box; }
+        .pass-btn { background: linear-gradient(90deg, #72efdd, #48bfe3); border: none; border-radius: 24px; color: #000; font-weight: bold; padding: 12px 30px; font-size: 1rem; cursor: pointer; margin-top: 12px; width: 100%; max-width: 400px; }
+        .store-btn { background: linear-gradient(90deg, #ff9e00, #ff6000); border: none; border-radius: 24px; color: #000; font-weight: bold; padding: 14px 35px; font-size: 1rem; cursor: pointer; box-shadow: 0 0 20px #ff9e00; margin-top: 15px; width: 100%; max-width: 400px; }
+        .store-btn.disabled { background: #555; box-shadow: none; color: #ddd; cursor: default; }
+        .pass-error { color: #ff6b9d; font-size: 0.9rem; margin-top: 10px; min-height: 1.2em; }
+        .premium-block { background: rgba(114, 9, 183, 0.12); border: 1px solid #7209b7; border-radius: 14px; padding: 18px; margin-bottom: 16px; text-align: left; line-height: 1.8; }
+        .premium-block h2 { color: #ffb703; font-size: 1.1rem; margin: 0 0 10px; }
+        .premium-block .star { color: #ffb703; }
+        .week-row { display: flex; gap: 10px; padding: 6px 0; border-bottom: 1px dashed rgba(255,183,3,0.3); font-size: 0.92rem; }
+        .week-row:last-child { border-bottom: none; }
+        .week-date { min-width: 92px; color: #72efdd; font-weight: bold; }
+        .dir-box { display: flex; gap: 12px; }
+        .dir-cell { flex: 1; background: rgba(255,183,3,0.08); border: 1px dashed #ffb703; border-radius: 10px; padding: 12px; text-align: center; }
+        .dir-cell .dir-name { font-size: 1.4rem; font-weight: bold; color: #ffb703; }
+        .compat-form input, .compat-form select { padding: 10px; border-radius: 8px; border: 1px solid #7209b7; background: #0d0221; color: #fff; font-size: 1rem; margin: 4px 2px; }
+        .compat-result { text-align: center; margin-top: 12px; }
+        .compat-pct { font-size: 2.2rem; font-weight: bold; color: #ff9e00; }
+        .back-link { background: none; border: none; color: #72efdd; cursor: pointer; font-size: 0.9rem; margin-bottom: 10px; padding: 0; }
     </style>
 </head>
 <body>
@@ -187,17 +207,30 @@
             <!-- 2. 有料ロック & 決済ローディングセクション -->
             <div id="premiumLockSection" class="section-block">
                 <h1>細目滿子の極秘AI対面鑑定館</h1>
-                <div class="price-tag">プレミアム個別チャット鑑定：1回 300円</div>
+                <div class="price-tag">プレミアム深層鑑定＋対面チャット：300円</div>
                 
                 <div id="lockArea" class="lock-overlay">
-                    <div class="lock-title">🚨 これより先は、47年の眼が宿る深層対面鑑定となります</div>
-                    <p style="font-size: 0.85rem; color: #e0aaff; line-height: 1.6; margin-bottom: 20px;">
-                        世間一般の安っぽいAIおみくじとは訳が違うよ。<br>
-                        お前が文字を打ち込むたび、細目滿子の人間観察眼がお前の宿命の潮流をリアルタイムで計算し、24時間いつでも直接対話で導き出そう。覚悟を持ってお進み。
+                    <div class="lock-title">🚨 これより先は、47年の眼が宿る深層鑑定となります</div>
+                    <p style="font-size: 0.85rem; color: #e0aaff; line-height: 1.6; margin-bottom: 6px;">
+                        世間一般の安っぽいAIおみくじとは訳が違うよ。プレミアムでは、無料鑑定の先にある「深層」を全部開く。
                     </p>
-                    <button type="button" id="payButton" class="pay-btn" onclick="unlock鑑定()">
-                        300円で細目滿子のAI対面鑑定を解放する
-                    </button>
+                    <p style="font-size: 0.9rem; color: #fff; line-height: 1.9; text-align: left; max-width: 420px; margin: 10px auto;">
+                        🔮 深層鑑定文（総評・長文）<br>
+                        💞 恋愛・仕事・金運・健康の深掘り鑑定<br>
+                        📅 今後7日間の運勢カレンダー<br>
+                        🕰 過去・現在・未来の三部鑑定<br>
+                        🧭 今日の吉方位<br>
+                        💑 相性鑑定（相手との相性度つき）<br>
+                        💬 細目滿子との対面チャット
+                    </p>
+                    <button type="button" id="buyButton" class="store-btn" onclick="buyPremium()">STORESで購入する（300円）</button>
+                    <p style="font-size: 0.8rem; color: #aaa; margin-top: 8px;">購入すると「合言葉」が手に入ります。下の欄に入力すると鑑定が開きます。</p>
+                    <input type="text" id="passInput" class="pass-input" placeholder="合言葉を入力">
+                    <button type="button" class="pass-btn" onclick="checkPass()">合言葉で鑑定を開く</button>
+                    <div id="passError" class="pass-error"></div>
+                    <div id="alreadyBox" style="display: none; margin-top: 14px;">
+                        <button type="button" class="pay-btn" onclick="openPremium()">プレミアム鑑定を開く（合言葉入力済み）</button>
+                    </div>
                 </div>
 
                 <div id="loadingArea" class="loading-box">
@@ -206,10 +239,96 @@
                 </div>
             </div>
 
+
+            <!-- 2.5 プレミアム深層鑑定セクション -->
+            <div id="premiumContentSection" class="section-block">
+                <h1>細目滿子の深層鑑定</h1>
+                <div class="price-tag">プレミアム深層鑑定＋対面チャット：300円</div>
+                <p id="pNameLine" style="color:#e0aaff; margin-bottom:16px;"></p>
+
+                <div class="premium-block">
+                    <h2>🔮 深層鑑定（総評）</h2>
+                    <div id="pDeep"></div>
+                </div>
+
+                <div class="premium-block">
+                    <h2>💞 恋愛運の深掘り</h2>
+                    <span class="star" id="pLoveStars"></span>
+                    <div id="pLoveDeep"></div>
+                </div>
+                <div class="premium-block">
+                    <h2>💼 仕事運の深掘り</h2>
+                    <span class="star" id="pWorkStars"></span>
+                    <div id="pWorkDeep"></div>
+                </div>
+                <div class="premium-block">
+                    <h2>💰 金運の深掘り</h2>
+                    <span class="star" id="pMoneyStars"></span>
+                    <div id="pMoneyDeep"></div>
+                </div>
+                <div class="premium-block">
+                    <h2>🍀 健康運の深掘り</h2>
+                    <span class="star" id="pHealthStars"></span>
+                    <div id="pHealthDeep"></div>
+                </div>
+
+                <div class="premium-block">
+                    <h2>📅 今後7日間の運勢カレンダー</h2>
+                    <div id="pWeek"></div>
+                </div>
+
+                <div class="premium-block">
+                    <h2>🕰 過去・現在・未来の三部鑑定</h2>
+                    <p><b style="color:#72efdd;">【過去】</b> <span id="pPast"></span></p>
+                    <p><b style="color:#72efdd;">【現在】</b> <span id="pPresent"></span></p>
+                    <p><b style="color:#72efdd;">【未来】</b> <span id="pFuture"></span></p>
+                </div>
+
+                <div class="premium-block">
+                    <h2>🧭 今日の吉方位</h2>
+                    <div class="dir-box">
+                        <div class="dir-cell"><div>吉方位</div><div class="dir-name" id="pDirGood"></div></div>
+                        <div class="dir-cell"><div>避けたい方位</div><div class="dir-name" id="pDirBad"></div></div>
+                    </div>
+                    <p id="pDirComment" style="margin-top:10px;"></p>
+                </div>
+
+                <div class="premium-block">
+                    <h2>✨ 今日のラッキーアクション</h2>
+                    <div id="pActions"></div>
+                </div>
+
+                <div class="premium-block">
+                    <h2>💑 相性鑑定</h2>
+                    <p style="font-size:0.9rem;">気になる相手の名前と生年月日を入れなさい。今日の二人の相性を視てあげるよ。</p>
+                    <form class="compat-form" onsubmit="calcCompat(event)">
+                        <input type="text" id="cpName" placeholder="相手の名前" required>
+                        <input type="number" id="cpYear" placeholder="1995" min="1900" max="2100" required style="width:90px;">
+                        <select id="cpMonth" required><option value="">月</option></select>
+                        <select id="cpDay" required><option value="">日</option></select>
+                        <button type="submit" class="pass-btn" style="max-width:220px;">相性を視る</button>
+                    </form>
+                    <div class="compat-result" id="compatResult" style="display:none;">
+                        <div class="compat-pct" id="cpPct"></div>
+                        <div class="star" id="cpStars"></div>
+                        <p id="cpComment"></p>
+                    </div>
+                </div>
+
+                <div class="premium-block">
+                    <h2>💌 細目滿子からの手紙</h2>
+                    <div id="pMessage"></div>
+                </div>
+
+                <button type="button" class="pay-btn" onclick="openChat()">細目滿子と対面チャットする</button>
+                <p style="margin-top:14px;"><button type="button" class="back-link" onclick="backToFree()">← 無料鑑定に戻る</button></p>
+            </div>
+
             <!-- 3. AIチャットセクション -->
             <div id="activeChatSection" class="section-block">
                 <h1>細目滿子の極秘AI対面鑑定館</h1>
-                <div class="price-tag">プレミアム個別チャット鑑定：1回 300円</div>
+                <p><button type="button" class="back-link" onclick="backToPremium()">← プレミアム鑑定に戻る</button></p>
+                <div class="price-tag">プレミアム深層鑑定＋対面チャット：300円</div>
 
                 <div class="chat-box" id="chatBox">
                     <div class="msg mitsuko">「よくおいでなすった、細目滿子さ。お前がわざわざ有料の門をくぐって私の前に座ったということは、それ相応の覚悟があるんだろうね。さあ、遠慮はいらないよ、お前の生年月日と、今その胸を一番激しく痛めている『本当の悩み』をここに吐き出しなさい。しっかり受け止めてやるからね…。」</div>
@@ -392,33 +511,280 @@ resultSection.scrollIntoView({ behavior: 'smooth', block: 'start'});
     function goToPremiumLock() {
         document.getElementById('freeFortuneSection').classList.remove('active');
         document.getElementById('premiumLockSection').classList.add('active');
+        if (isUnlocked()) { document.getElementById('alreadyBox').style.display = 'block'; }
+        renderPremiumButton();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+    function renderPremiumButton() {
+        const buy = document.getElementById('buyButton');
+        if (buy && !STORES_URL) { buy.classList.add('disabled'); buy.textContent = "STORESで購入する（300円）※販売ページ準備中"; }
+    }
 
-    function unlock鑑定() {
-        // ──────────────────────────────────────────────────────────────────
-        // 【開発者メモ】
-        // 将来ここにSTORES等の外部決済URLへの遷移（window.location.href = 'STORESの決済リンク';）
-        // を挟む場合は、以下の演出コードと差し替えてください。
-        // ──────────────────────────────────────────────────────────────────
+    /* プレミアム（STORES決済＋合言葉） */
+    // STORESの商品ページURLが決まったら、ここに入れるだけで購入ボタンが有効になります。
+    const STORES_URL = "";
+    // 合言葉（STORESのダウンロードファイルに記載するものと一致させる）
+    const PREMIUM_PASS = "まんぞく300";
+
+    function buyPremium() {
+        if (STORES_URL) { window.open(STORES_URL, "_blank"); }
+    }
+
+    function checkPass() {
+        const v = document.getElementById('passInput').value.trim();
+        const err = document.getElementById('passError');
+        if (v === PREMIUM_PASS) {
+            try { localStorage.setItem('mitsukoPremium', 'ok'); } catch (e) {}
+            err.textContent = "";
+            openPremium();
+        } else {
+            err.textContent = "合言葉が違うようだよ。購入時のファイルをもう一度確かめなさい。";
+        }
+    }
+
+    function isUnlocked() {
+        try { return localStorage.getItem('mitsukoPremium') === 'ok'; } catch (e) { return false; }
+    }
+
+    function openPremium() {
         const lockArea = document.getElementById('lockArea');
         const loadingArea = document.getElementById('loadingArea');
         const loadingText = document.getElementById('loadingText');
-
         lockArea.style.display = 'none';
         loadingArea.style.display = 'block';
-
+        setTimeout(() => { loadingText.textContent = "深層の扉を開いているよ..."; }, 700);
         setTimeout(() => {
-            loadingText.textContent = "宿命 of 接続の回線を開通中...";
-        }, 700);
-
-        setTimeout(() => {
+            loadingArea.style.display = 'none';
+            lockArea.style.display = 'block';
             document.getElementById('premiumLockSection').classList.remove('active');
-            document.getElementById('activeChatSection').classList.add('active');
-            const chatBox = document.getElementById('chatBox');
-            chatBox.scrollTop = chatBox.scrollHeight;
+            document.getElementById('premiumContentSection').classList.add('active');
+            renderPremium();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 1500);
     }
+
+    function openChat() {
+        document.getElementById('premiumContentSection').classList.remove('active');
+        document.getElementById('activeChatSection').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function backToPremium() {
+        document.getElementById('activeChatSection').classList.remove('active');
+        document.getElementById('premiumContentSection').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function backToFree() {
+        document.getElementById('premiumContentSection').classList.remove('active');
+        document.getElementById('freeFortuneSection').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const deep_pool = [
+        "お前の宿命を深く視ると、今年は「静かに力を溜める年」から「静かに実る年」へ移る境目に立っている。表面だけ見れば平穏だが、水面下では大きな潮の流れが変わり始めているんだよ。焦って波を立てようとするな。お前がこれまで黙って積み上げてきたものが、ここから先、人の縁という形で次々に還ってくる。特に年上の人物の何気ない一言に、次の扉の鍵が隠れているから聞き逃すな。",
+        "深層の相が出たよ。お前は「与えることで巡る」星を持っている。計算ずくで動くほど運は痩せ、損得を忘れて手を差し伸べたときに大きく還ってくる不思議な宿命だ。今日のポイントは『順番』だよ。自分の用事を後回しにしてでも、先に相手の困りごとを片付けなさい。その小さな順番の入れ替えが、月末までの流れを全部変える。",
+        "お前の星位を深く読むと、「再編」の文字が濃く出ている。古いやり方、古い付き合い、古い持ち物。そのどれかを手放すことが、次の運を入れる器を作るんだ。捨てることは負けじゃないよ。器が空いていないところに、新しい幸運は入ってこられないんだからね。まずは身の回りの一角から、思い切って片付けなさい。",
+        "深く視たよ、お前。お前の本当の武器は『続ける力』だ。派手な才能じゃない、誰も見ていない場所で同じことを淡々と続ける力。これが歳を重ねるほど効いてくる星回りなんだ。今日は新しいことを始めるより、続けていることの精度を一段上げる日。地味だが、この一手が半年後の景色を変えるよ。",
+        "お前の宿命の深層には「水」の気が強い。争いを好まず、場の空気を読んで潤滑に回す役回りだ。ただしね、気を遣いすぎて自分の本音を置き去りにすると、水は濁る。今日は一度だけ、自分の希望をはっきり言葉にしなさい。周りはお前が思うほど、お前の本音を知らないんだよ。",
+        "極秘の相を明かそう。お前には『遅れて咲く花』の星がある。若い頃に実らなかった努力ほど、ここから先の季節に大きく開くんだ。だから過去を悔やむな。あの遠回り全部が、今のお前の根になっている。今日は未来の話をする相手を大切にしなさい。愚痴の相手じゃなく、夢の相手だよ。"
+    ];
+    const deep_love_pool = [
+        "恋愛の深層を視ると、お前は『言葉より態度』で愛情を示す相だ。それは美点だが、相手には半分しか伝わっていないことが多い。今日は態度に一言だけ添えなさい。「ありがとう」の一言で十分だ。それだけで相手の心の温度が変わる日だよ。",
+        "深く視たよ。お前の恋は『近くの縁』に強い。遠くの華やかな出会いより、日常を共にする相手との間に本物が育つ相だ。フリーの者は、いつもの場所のいつもの顔ぶれを、今日は少し違う目で見なさい。既に相手がいる者は、二人だけの小さな約束事を作ると絆が深まる。",
+        "恋愛運の底流には『聞き役に回ると開く』相がある。今日は自分の話を三割に抑えて、相手の話を最後まで聞きなさい。人は『この人には話せる』と感じた相手に心を開くものだ。焦って距離を詰める日ではない。静かな信頼を積む日だよ。",
+        "お前の恋の星は『再会と再評価』を示している。昔の縁そのものではなく、昔の自分では気づけなかった相手の良さに、今の目で気づく相だ。連絡が来たら、懐かしさだけで判断するな。今の二人の相性で見極めなさい。",
+        "深層の恋愛相は『素直さが最強の武器』だ。駆け引きや遠回しな表現は、今日のお前には逆効果。短く、まっすぐに。それが一番響く日だ。好意があるなら、まず自分から挨拶と笑顔を先に渡しなさい。順番が逆だと運は逃げるよ。"
+    ];
+    const deep_work_pool = [
+        "仕事の深層は『見えない仕事ほど評価される』相だ。今日の雑務や下準備を丁寧にやった者勝ちだよ。特に人のミスを静かにカバーする動きが、後日大きな信頼に化ける。表舞台を狙うな。今日は裏側の精度がお前の値段を決める。",
+        "深く視ると、お前の仕事運は『相談される側』に回ったときに跳ねる。今日は自分から意見を言うより、周りの相談を丁寧に受ける日にしなさい。集まった情報が、来週のお前の最大の武器になる。メモを取る手を惜しむなよ。",
+        "仕事の底流に『段取りの神』が宿る日だ。始める前に十分だけ手順を書き出しなさい。その十分が、夕方の二時間の混乱を消す。逆に、勢いだけで始めた仕事は今日は必ず手戻りが出る。急がば回れが、そのまま正解だ。",
+        "お前の仕事相は『教えることで伸びる』だ。後輩や同僚に一つ教えなさい。教える行為が、お前自身の理解を深くし、立場を一段上げる。出し惜しみは運を腐らせるよ。知識は配った分だけ増える、不思議な財布なんだ。",
+        "深層の仕事運は『断る勇気』を示している。今日は全部引き受けるな。優先順位を声に出して宣言しなさい。「これは明日でいいですか」の一言が、お前の仕事の質と体の両方を守る。抱え込みは美徳じゃない、事故の予告だよ。"
+    ];
+    const deep_money_pool = [
+        "金運の深層は『小さな漏れを塞ぐと大きく巡る』相だ。大きな収入を狙う日ではない。定期購読、惰性の会費、使っていないサービス。その一つを今日見直しなさい。月に数百円の漏れを塞ぐことが、財布の底力を作るんだ。",
+        "深く視たよ。お前の金運は『人への投資』で開く相がある。本、道具、学び、そして信頼できる人との食事。今日の出費は『消える金』か『育つ金』かで見極めなさい。育つ金への一万円は、消える金の十万円より価値がある。",
+        "金運の底流は『財布の住所を決める』ことだ。お金の置き場所が散らかっている者ほど、金は逃げる。今日は財布の中身を全部出して、レシートと期限切れのカードを処分しなさい。整った財布に、新しい金は入りたがるものだよ。",
+        "お前の金相は『急な儲け話に毒がある』日を示している。甘い話ほど、今日は一歩引いて眺めなさい。逆に、地味で確実な一手（貯蓄の自動化、固定費の交渉）には強い追い風だ。大勝ちを狙わず、確実に勝ちに行きなさい。",
+        "深層の金運は『感謝の支払い』で巡る。滞っていた支払い、借りていたものの返却、後回しの精算。今日それを一つ片付けなさい。お金の流れは、心の滞りと連動しているんだ。清く払う者の元へ、金は戻ってくるよ。"
+    ];
+    const deep_health_pool = [
+        "健康の深層は『睡眠の質が全てを決める』相だ。今日は寝る一時間前から画面を遠ざけなさい。それだけで明日の集中力と機嫌が変わる。運気の土台は体だ。体を粗末にする者の鑑定は、当たっても活かせないんだよ。",
+        "深く視ると、お前の体は『水と巡り』を求めている。水分をこまめに取り、湯船で体を温め、軽く体を伸ばす。この三つが今日の処方箋だ。大きな不調の芽は、小さな滞りから始まる。巡らせなさい。",
+        "健康相の底流は『食べ方』だ。何を食べるかより、どう食べるか。今日は一口ごとに箸を置くくらいの気持ちで、ゆっくり食べなさい。胃腸の機嫌が、そのまま運の機嫌になる日だよ。",
+        "お前の体は『休む下手』の相が出ている。休日にまで用事を詰め込むな。今日は予定を一つ消しなさい。空白の時間に、体も心も修復されるんだ。休むことも仕事のうちだよ、まったく。",
+        "深層の健康運は『目と首』に注意だ。画面の見過ぎで運気まで曇る。意識して遠くを見て、首を回しなさい。小さなケアを馬鹿にするな。47年の眼は、体の小さなサインほど見逃さないよ。"
+    ];
+    const past_pool = [
+        "過去のお前は『我慢で乗り切る』ことを覚えた季節にいた。あの頃の我慢は無駄じゃなかったが、もう同じ戦い方は要らない。今のお前には、別の武器がある。",
+        "過去の流れには『縁の入れ替わり』があった。離れた人がいた分、入ってきた縁もある。失ったものだけ数えるのは、もう終わりにしなさい。",
+        "過去のお前は、人の期待に応えることを優先してきた。その積み重ねが今の信頼を作った。ただし、その癖が今の疲れの正体でもあるんだよ。",
+        "過去の相は『種まきの季節』だ。蒔いた種のいくつかは、まだ土の中にある。芽が出ていないのは、失敗したからじゃない。季節がまだなだけだ。",
+        "過去のお前には『言えなかった一言』が残っている。それは後悔の種にも、成長の糧にもなる。どうするかは、今のお前が決めることだ。"
+    ];
+    const present_pool = [
+        "現在のお前は『助走』の真っ只中にいる。目立った成果が見えなくても、足は前に進んでいる。焦って跳ぶな、助走の長さが跳躍の高さを決める。",
+        "今のお前は『選択の分岐点』に立っている。大事なのは、どちらを選ぶかより、選んだ後に迷わないことだ。今日決めたことは、今日から正解にしていきなさい。",
+        "現在の相は『整える時期』だ。拡大より整頓。広げるより深める。今の地味な作業が、次の季節の土台になる。",
+        "今のお前には『頼られ運』が来ている。面倒がらずに引き受けた用事の中に、次の縁の入口がある。ただし、全部は引き受けるな。選んで引き受けなさい。",
+        "現在の流れは『静かな追い風』だ。劇的ではないが、確実に背中を押されている。小さな「うまくいった」を数える日にしなさい。運は数えた分だけ増える。"
+    ];
+    const future_pool = [
+        "未来の相には『実りの兆し』が見える。今日の小さな決断が、数ヶ月後の大きな実りに繋がっている。だから今日の選択は、軽く扱うな。",
+        "これからのお前には『新しい顔ぶれ』が入ってくる兆しがある。初対面の相手ほど丁寧に。未来の味方は、まだ知らない顔をしているものだ。",
+        "未来の流れは『一度止まって、大きく曲がる』相だ。停滞に見える時期が来ても、それは曲がり角の合図だ。慌てて引き返さないこと。",
+        "未来のお前は『教える側・渡す側』に立っている場面が視える。今のうちに、自分のやり方を言葉にしておきなさい。それが未来の財産になる。",
+        "これからの運気は『家の内側を整えた者』に味方する。住まいと身近な人間関係。足元の整備が、遠くの幸運を呼び寄せるんだよ。"
+    ];
+    const dir_comment_pool = [
+        "今日は吉方位の方向へ、少し遠回りしてでも出かけてみなさい。その方向の店や場所での買い物、食事が運を連れてくる。",
+        "吉方位は『動く理由』を作る方位だ。用事がなくても、その方角の景色のいい場所まで歩いてみなさい。体を動かした分だけ運も動く。",
+        "避けたい方位への大きな用事は、できれば今日は外しなさい。どうしても行くなら、時間をずらして短時間で済ませることだ。",
+        "吉方位の方角にある神社仏閣や公園は、今日のお前に特に相性がいい。深呼吸ひとつで、頭の中の霧が晴れるよ。"
+    ];
+    const action_pool = [
+        "玄関の靴を全部揃えて、拭き掃除をしなさい",
+        "財布の中のレシートを全部捨てなさい",
+        "久しく連絡していない人に、短い近況メッセージを送りなさい",
+        "水回りを一つ、ピカピカに磨きなさい",
+        "今日の夕食に、緑の野菜を一品足しなさい",
+        "鞄の中身を全部出して、要らない物を三つ捨てなさい",
+        "朝のうちに、今日の感謝を一つ声に出しなさい",
+        "机の上を何もない状態にしてから仕事を始めなさい",
+        "新しい下着か靴下をおろしなさい",
+        "寝る前に、明日の服を用意しておきなさい"
+    ];
+    const msg_pool = [
+        "{name}、よくぞここまで来たね。お前の人生は、まだ道の途中だ。今日の鑑定を胸に、まず一歩だけ進みなさい。その一歩が、明日のお前を助けるんだよ。…ふふ、応援しているからね。",
+        "{name}へ。人はね、変われないんじゃない。変わる順番を間違えているだけなんだ。お前は今日、その順番に気づいた。それだけで十分に価値のある一日だよ。",
+        "{name}、聞きなさい。幸運は、準備のできた者の玄関にしか立たない。今日のラッキーアクションを一つでいいから実行しなさい。扉は、叩いた者の前でだけ開くんだ。",
+        "{name}。お前のことを笑う者がいても気にするな。47年の眼で視たお前の星は、本物だ。静かに、しかし確かに進みなさい。…また視てほしくなったら、いつでもおいで。"
+    ];
+    const compat_bands = [
+        { min: 90, pool: [
+            "滅多に出ない大当たりの相性だよ。二人の星が噛み合いすぎて、周りが置いていかれるほどだ。大事にしなさい、これは財産だ。",
+            "魂の同調レベルが高い二人だ。言葉にしなくても伝わることが多いはず。ただし、伝わるはずと過信して言葉を省くと、すれ違いの元になるよ。",
+            "前世からの縁を疑うほどの相性だね。一緒にいる時間が、二人の運そのものを押し上げる。遠慮せず、もっと一緒にいなさい。"
+        ]},
+        { min: 75, pool: [
+            "良い相性だ。二人の弱点がうまく補い合えている。長く続く縁の形をしているよ。",
+            "相性は上々。ただし、お前の側が少し遠慮しすぎる傾向がある。今日は本音を一つ多めに言ってみなさい。",
+            "穏やかに深まる相性だ。派手さはないが、信頼が積み上がる二人だね。約束を守ることが何より効く。"
+        ]},
+        { min: 60, pool: [
+            "悪くないが、工夫が要る相性だ。価値観の違いを『面白い』と思えるかどうかが鍵になるよ。",
+            "普通の相性。だからこそ、二人の関係は努力次第で大きく育つ。今日は相手の良いところを一つ、言葉にして伝えなさい。",
+            "波長が合う日と合わない日の差がある二人だ。合わない日は距離を置く勇気を。それも相性の知恵だよ。"
+        ]},
+        { min: 0, pool: [
+            "今日は波長が噛み合いにくい日だ。だが相性は日ごとに流れるもの。今日の数字だけで縁を判断するんじゃないよ。",
+            "刺激の強い組み合わせだ。ぶつかる分、学びも多い相手。今日は聞き役に回ると、思わぬ発見がある。",
+            "今は距離感が大事な二人だ。無理に近づかず、挨拶と笑顔を丁寧に。それだけで流れは変わっていくよ。"
+        ]}
+    ];
+
+    function premiumBase() {
+        const name = document.getElementById('name').value.trim() || "名無し";
+        const year = document.getElementById('year').value || "2000";
+        const month = document.getElementById('month').value || "1";
+        const day = document.getElementById('day').value || "1";
+        const blood = document.getElementById('blood').value || "";
+        const today = new Date();
+        const ymd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        return { name: name, year: year, month: month, day: day, blood: blood,
+                 base: name + "|" + year + "-" + month + "-" + day + "|" + blood + "|" + ymd };
+    }
+
+    function renderPremium() {
+        const info = premiumBase();
+        const base = info.base;
+        const dispName = info.name === "名無し" ? "お前" : info.name + " 殿";
+        document.getElementById('pNameLine').textContent = dispName + "への深層鑑定 ― " + new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('pDeep').textContent = pick(base + "#deep", deep_pool);
+        const cats = [ ["Love", deep_love_pool], ["Work", deep_work_pool], ["Money", deep_money_pool], ["Health", deep_health_pool] ];
+        cats.forEach(function(c) {
+            const key = c[0];
+            const st = stars(base + "#deep" + key + "S");
+            document.getElementById('p' + key + 'Stars').textContent = starText(st);
+            document.getElementById('p' + key + 'Deep').textContent = pick(base + "#deep" + key, c[1]);
+        });
+        // 7日間カレンダー
+        const weekBox = document.getElementById('pWeek');
+        weekBox.innerHTML = "";
+        const wd = ["日", "月", "火", "水", "木", "金", "土"];
+        const week_pool = [
+            "静かに力を溜める日", "縁が動き出す日", "言葉が鍵になる日", "財布の紐を締める日",
+            "再会の気配がある日", "決断に向く日", "体を休める日", "小さな挑戦が実る日"
+        ];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date();
+            d.setDate(d.getDate() + i);
+            const f = fortuneFor(info.name, info.year, info.month, info.day, info.blood, d);
+            const avg = Math.round((f.loveStars + f.workStars + f.moneyStars + f.healthStars) / 4);
+            const row = document.createElement('div');
+            row.className = 'week-row';
+            const label = (i === 0 ? "今日 " : "") + (d.getMonth() + 1) + "/" + d.getDate() + "（" + wd[d.getDay()] + "）";
+            const dspan = document.createElement('span'); dspan.className = 'week-date'; dspan.textContent = label;
+            const sspan = document.createElement('span'); sspan.className = 'star'; sspan.textContent = starText(avg);
+            const cspan = document.createElement('span');
+            const dymd = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+            cspan.textContent = pick(info.name + "|" + info.year + "-" + info.month + "-" + info.day + "|" + info.blood + "|" + dymd + "#week", week_pool);
+            row.appendChild(dspan); row.appendChild(sspan); row.appendChild(cspan);
+            weekBox.appendChild(row);
+        }
+        // 三部鑑定
+        document.getElementById('pPast').textContent = pick(base + "#past", past_pool);
+        document.getElementById('pPresent').textContent = pick(base + "#present", present_pool);
+        document.getElementById('pFuture').textContent = pick(base + "#future", future_pool);
+        // 吉方位
+        const dirs = ["北", "北東", "東", "南東", "南", "南西", "西", "北西"];
+        const good = pick(base + "#dirG", dirs);
+        const badPool = dirs.filter(function(x) { return x !== good; });
+        document.getElementById('pDirGood').textContent = good;
+        document.getElementById('pDirBad').textContent = pick(base + "#dirB", badPool);
+        document.getElementById('pDirComment').textContent = pick(base + "#dirC", dir_comment_pool);
+        // ラッキーアクション（重複なし3つ）
+        const acts = [];
+        for (let i = 0; i < action_pool.length && acts.length < 3; i++) {
+            const a = pick(base + "#act" + i, action_pool);
+            if (acts.indexOf(a) === -1) acts.push(a);
+        }
+        document.getElementById('pActions').textContent = "① " + acts[0] + "　② " + acts[1] + "　③ " + acts[2];
+        // 手紙
+        document.getElementById('pMessage').textContent = pick(base + "#msg", msg_pool).replace("{name}", info.name === "名無し" ? "お前" : info.name);
+        // 相性フォームの月日を初期化
+        const cm = document.getElementById('cpMonth'), cd = document.getElementById('cpDay');
+        if (cm.options.length <= 1) {
+            for (let m = 1; m <= 12; m++) cm.options.add(new Option(m, m));
+            for (let d = 1; d <= 31; d++) cd.options.add(new Option(d, d));
+        }
+        // 購入ボタンの状態
+        const buy = document.getElementById('buyButton');
+        if (buy && !STORES_URL) { buy.classList.add('disabled'); buy.textContent = "STORESで購入する（300円）※販売ページ準備中"; }
+    }
+
+    function calcCompat(event) {
+        event.preventDefault();
+        const info = premiumBase();
+        const cpName = document.getElementById('cpName').value.trim();
+        const cpYear = document.getElementById('cpYear').value;
+        const cpMonth = document.getElementById('cpMonth').value;
+        const cpDay = document.getElementById('cpDay').value;
+        if (!cpName || !cpYear || !cpMonth || !cpDay) return;
+        const today = new Date();
+        const ymd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        const a = info.name + "|" + info.year + "-" + info.month + "-" + info.day;
+        const b = cpName + "|" + cpYear + "-" + cpMonth + "-" + cpDay;
+        const seed = [a, b].sort().join("||") + "|" + ymd + "#compat";
+        const pct = 55 + (hashSeed(seed) % 45);
+        let band = compat_bands[compat_bands.length - 1];
+        for (let i = 0; i < compat_bands.length; i++) { if (pct >= compat_bands[i].min) { band = compat_bands[i]; break; } }
+        document.getElementById('cpPct').textContent = "相性度 " + pct + "%";
+        document.getElementById('cpStars').textContent = starText(Math.max(1, Math.round(pct / 20)));
+        document.getElementById('cpComment').textContent = pick(seed, band.pool);
+        document.getElementById('compatResult').style.display = 'block';
+    }
+
 
     /* 有料AIチャット処理 */
     async function sendMessage(event) {
